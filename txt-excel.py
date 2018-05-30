@@ -3,20 +3,37 @@
 
 #格式化，操作excel
 import json
-import xlwt3
+import xlwt
+from collections import OrderedDict
 
-file = xlwt3.Workbook() #创建工作薄
-table = file.add_sheet('test1',cell_overwrite_ok = True)#创建工作表
+file = xlwt.Workbook() #创建工作薄
+table = file.add_sheet('test1')  # 创建工作表
 
-table.write(1, 0, 'number')
-table.write(1, 1, 'name')
-table.write(1, 2, 'score')
-
-file = 'student.txt'
-with open(file,'r',encoding='utf-8') as f:
+file01 = 'student.txt'
+with open(file01,'r',encoding='utf-8') as f:
     data = f.read()
 dataDic = json.loads(data) #字典对象
 
-for i in range(100):
-    for listdata in dataDic[1]:
-        table.write(i,2,listdata)
+# n = 1
+# for i in range(1,100):
+#     if i in dataDic:
+#         print("asdf" + dataDic.get(i))
+#         for listdata in dataDic.get(i):
+#             print(listdata)
+#             table.write(i,n,listdata)
+#             n +=1
+#     else:
+#         print('end')
+#         pass
+
+i = 0
+for con in dataDic:
+    values = dataDic.get(con)
+    table.write(i, 0, con)
+    j = 1
+    for value in values:
+        table.write(i, j, value)
+        j += 1
+    i += 1
+
+file.save('student_excel.xls')
